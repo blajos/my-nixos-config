@@ -1,0 +1,74 @@
+{ config, lib, pkgs, ... }:
+
+{
+  imports =
+    [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
+    ];
+
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "sd_mod" "rtsx_pci_sdmmc" ];
+  boot.kernelModules = [ "fuse" "kvm-intel" ];
+  boot.extraModulePackages = [ ];
+
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/57761e6c-0d1d-499a-ae3f-28f08829a6e5";
+      fsType = "ext4";
+      options = ["noatime" "nodiratime" "discard"];
+    };
+
+  fileSystems."/var" =
+    { device = "/dev/disk/by-uuid/8ab984b2-bff3-49ee-a17c-6b9e1e6b577c";
+      fsType = "ext4";
+      options = ["noatime" "nodiratime" "discard"];
+    };
+
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/9e754861-87d0-4aba-927f-b9c6f2e886ea";
+      fsType = "ext4";
+      options = ["noatime" "nodiratime" "discard"];
+    };
+
+  fileSystems."/tmp" =
+    { device = "/dev/disk/by-uuid/42cdef51-668f-4e11-8591-b7efff639233";
+      fsType = "ext4";
+      options = ["noatime" "nodiratime" "discard"];
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/sda1";
+      fsType = "ext2";
+    };
+
+  fileSystems."/boot/grub" =
+    { device = "/boot/nixos-grub";
+      fsType = "none";
+      options = ["bind"];
+    };
+
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/3c0ce366-f533-41fd-bb7a-0ecf2a9f0da2"; }
+    ];
+
+  nix.maxJobs = lib.mkDefault 4;
+  
+  # Use the GRUB 2 boot loader.
+  boot.loader.grub.enable = true;
+  boot.loader.grub.version = 2;
+  # Define on which hard drive you want to install Grub.
+  #boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.device = "nodev";
+  boot.loader.grub.copyKernels = true;
+  
+  boot.initrd.kernelModules = [ "fbcon" ];
+  boot.initrd.luks.devices = [{
+    name = "crypto_root"; device = "/dev/disk/by-uuid/fae979d8-7fea-4a73-a4c3-ebd1222713b0";
+    preLVM = true;
+    allowDiscards = true;
+  }];
+
+  networking.hostName = "bla-t460";
+  boot.kernelPackages = pkgs.linuxPackages_4_8;
+  #boot.kernelPackages = pkgs.linuxPackages_testing;
+
+  services.logind.extraConfig = "HandleLidSwitchDocked=suspend";
+
+}

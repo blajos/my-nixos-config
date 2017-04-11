@@ -1,0 +1,4 @@
+env.nix
+my-hardware-configuration.nix
+hardware-configuration.nix
+env-*
