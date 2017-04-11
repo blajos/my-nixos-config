@@ -114,6 +114,7 @@
     unzip
     p7zip
     openjdk
+    drive
     prometheus prometheus-node-exporter prometheus-pushgateway prometheus-alertmanager grafana
   ];
 
