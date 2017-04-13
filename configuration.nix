@@ -172,6 +172,10 @@
     firefox = {
       icedtea = true;
     };
+    
+    virtualbox = {
+      enableExtensionPack = true;
+    };
   };
   
   environment.variables = {
