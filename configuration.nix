@@ -115,6 +115,7 @@
     p7zip
     openjdk
     drive
+    pitivi
     prometheus prometheus-node-exporter prometheus-pushgateway prometheus-alertmanager grafana
   ];
 
@@ -155,6 +156,7 @@
 
   nix.gc.automatic = true;
   nix.gc.dates = "11:30";
+  nix.gc.options = "--delete-older-than 14d";
 
   zramSwap.enable = true;
   zramSwap.numDevices = 4;
