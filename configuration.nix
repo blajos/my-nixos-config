@@ -115,7 +115,7 @@
     p7zip
     openjdk
     drive
-    pitivi
+    avidemux
     prometheus prometheus-node-exporter prometheus-pushgateway prometheus-alertmanager grafana
   ];
 
